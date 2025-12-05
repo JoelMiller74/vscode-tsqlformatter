@@ -27,8 +27,8 @@ describe('Formatter Engine (Vitest)', () => {
   it('operator spacing', () => {
     const t = 'WHERE a.Id=10 and b.Value>5';
     const out = formatTsql(t, { options: {} as any, config: cfg({ operatorSpacing: true }), profile: {} });
-    expect(/Id \= 10/.test(out)).toBe(true);
-    expect(/Value \> 5/.test(out)).toBe(true);
+    expect(/Id = 10/.test(out)).toBe(true);
+    expect(/Value > 5/.test(out)).toBe(true);
   });
 
   it('parenthesis spacing inside', () => {

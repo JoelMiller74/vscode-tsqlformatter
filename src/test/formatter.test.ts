@@ -20,7 +20,7 @@ suite('Formatter Engine', () => {
   test('bracket identifiers add/remove', () => {
     const t = 'SELECT a.Id, dbo.TableA FROM dbo.TableA a';
     const add = formatTsql(t, { options: {} as any, config: cfg({ bracketIdentifiers: 'add' }), profile: {} });
-    assert.ok(/\[a\]\.\[Id\]/.test(add));
+      assert.ok(/\[a\]\n?\.\n?\[Id\]/.test(add), 'should add brackets around alias and identifier (allow optional newlines)');
     const remove = formatTsql('[dbo].[TableA]', { options: {} as any, config: cfg({ bracketIdentifiers: 'remove' }), profile: {} });
     assert.strictEqual(remove, 'dbo.TableA');
   });

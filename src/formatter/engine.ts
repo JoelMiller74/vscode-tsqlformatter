@@ -34,7 +34,7 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
   const newlineBeforeSemicolon = config.get?.('newlineBeforeSemicolon', false);
 
   const keywords = [
-    'select','from','where','group','by','order','inner','left','right','full','join','on','with','cte','over','partition','by','insert','into','update','delete','create','alter','drop','table','view','function','procedure'
+    'select','from','where','group','by','order','inner','left','right','full','join','on','with','cte','over','partition','insert','into','update','delete','create','alter','drop','table','view','function','procedure'
   ];
 
   const kw = new RegExp(`\\b(${keywords.join('|')})\\b`, 'gi');

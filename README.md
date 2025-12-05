@@ -32,14 +32,14 @@ Key settings under `tsqlformatter.*`:
 
 ### Quick Settings Reference
 
-- `sqlFormatter.columnsCommaPlacement`: leading | trailing | ignore — comma placement for column lists (SELECT/ORDER BY/GROUP BY).
-- `sqlFormatter.aliasKeyword`: enable | remove | ignore — add/remove/ignore `AS` for aliased columns and table/subquery aliases.
-- `sqlFormatter.safeWrapDelimiters`: [comma, AND, OR] — delimiters considered safe for wrapping with `expressionWidth`.
-- `sqlFormatter.expressionWidth`: number (0 disables) — wrap long expressions at safe delimiters.
-- `sqlFormatter.indentStyle`: standard | central — indent strategy.
-- `sqlFormatter.indentStyleMode`: ignore | enable — enable central alignment when using `central`.
-- `sqlFormatter.indentAlignColumn`: number — target column for central alignment.
-- `sqlFormatter.indentCentralClauses`: [SELECT, WHERE, ON, SET] — clauses to align centrally.
+- `tsqlformatter.columnsCommaPlacement`: leading | trailing | ignore — comma placement for column lists (SELECT/ORDER BY/GROUP BY).
+- `tsqlformatter.aliasKeyword`: enable | remove | ignore — add/remove/ignore `AS` for aliased columns and table/subquery aliases.
+- `tsqlformatter.safeWrapDelimiters`: [comma, AND, OR] — delimiters considered safe for wrapping with `expressionWidth`.
+- `tsqlformatter.expressionWidth`: number (0 disables) — wrap long expressions at safe delimiters.
+- `tsqlformatter.indentStyle`: standard | central — indent strategy.
+- `tsqlformatter.indentStyleMode`: ignore | enable — enable central alignment when using `central`.
+- `tsqlformatter.indentAlignColumn`: number — target column for central alignment.
+- `tsqlformatter.indentCentralClauses`: [SELECT, WHERE, ON, SET] — clauses to align centrally.
 
 ## Known Issues
 

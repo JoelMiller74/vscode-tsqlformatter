@@ -64,9 +64,9 @@ Exported profiles are JSON files that can be shared and imported by others.
 ## Exporting and importing
 
 Use the commands:
-- `SQL Formatter: Save Active Profile`
-- `SQL Formatter: Export Active Profile`
-- `SQL Formatter: Import Profile`
+- `T-SQL Formatter: Save Active Profile`
+- `T-SQL Formatter: Export Active Profile`
+- `T-SQL Formatter: Import Profile`
 
 These will serialize and load the above settings into your workspace or user settings.
 
@@ -74,11 +74,11 @@ These will serialize and load the above settings into your workspace or user set
 
 | Setting | Values | Purpose |
 | --- | --- | --- |
-| `tsqlformatter.columnsCommaPlacement` | `leading` | `trailing` | `ignore` | Control comma placement for column lists (SELECT/ORDER BY/GROUP BY). |
-| `tsqlformatter.aliasKeyword` | `enable` | `remove` | `ignore` | Add/remove/ignore `AS` for aliased columns and table/subquery aliases. |
+| `tsqlformatter.columnsCommaPlacement` | `leading` / `trailing` / `ignore` | Control comma placement for column lists (SELECT/ORDER BY/GROUP BY). |
+| `tsqlformatter.aliasKeyword` | `enable` / `remove` / `ignore` | Add/remove/ignore `AS` for aliased columns and table/subquery aliases. |
 | `tsqlformatter.safeWrapDelimiters` | Array of `comma`, `AND`, `OR` | Delimiters considered safe when wrapping expressions with `expressionWidth`. |
 | `tsqlformatter.expressionWidth` | number (0 disables) | Wrap long expressions at safe delimiters. |
-| `tsqlformatter.indentStyle` | `standard` | `central` | Select indent strategy. |
-| `tsqlformatter.indentStyleMode` | `ignore` | `enable` | Enable central alignment when using `central`. |
+| `tsqlformatter.indentStyle` | `standard` / `central` | Select indent strategy. |
+| `tsqlformatter.indentStyleMode` | `ignore` / `enable` | Enable central alignment when using `central`. |
 | `tsqlformatter.indentAlignColumn` | number | Target column for central alignment. |
 | `tsqlformatter.indentCentralClauses` | Array of `SELECT`, `WHERE`, `ON`, `SET` | Clauses to align centrally. |

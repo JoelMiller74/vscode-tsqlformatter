@@ -16,12 +16,12 @@ export function activate(context: vscode.ExtensionContext) {
 			const text = document.getText();
 			const config = vscode.workspace.getConfiguration('tsqlformatter');
 			const profile = loadActiveProfile(config, context);
-			const formatted = formatTsql(text, { options, config, profile });
 
 			if (token.isCancellationRequested) {
 				return [];
 			}
 
+			const formatted = formatTsql(text, { options, config, profile });
 			const firstLine = document.lineAt(0);
 			const lastLine = document.lineAt(document.lineCount - 1);
 			const fullRange = new vscode.Range(firstLine.range.start, lastLine.range.end);
