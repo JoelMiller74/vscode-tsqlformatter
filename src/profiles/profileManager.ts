@@ -248,7 +248,7 @@ export async function applyWorkspaceProfile(context: vscode.ExtensionContext) {
 export async function exportProfile(context: vscode.ExtensionContext) {
   const name = context.globalState.get<string>(ACTIVE_PROFILE_KEY) || 'default';
   const data = context.globalState.get(`profile:${name}`) ?? {};
-  const uri = await vscode.window.showSaveDialog({ filters: { 'JSON': ['json'] }, defaultUri: vscode.Uri.file(`sql-formatter-${name}.json`) });
+  const uri = await vscode.window.showSaveDialog({ filters: { 'JSON': ['json'] }, defaultUri: vscode.Uri.file(`tsql-formatter-${name}.json`) });
   if (!uri) {
     return;
   }
