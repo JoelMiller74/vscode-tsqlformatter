@@ -248,7 +248,7 @@ export async function applyWorkspaceProfile(context: vscode.ExtensionContext) {
 export async function exportProfile(context: vscode.ExtensionContext) {
   const name = context.globalState.get<string>(ACTIVE_PROFILE_KEY) || 'default';
   const data = context.globalState.get(`profile:${name}`) ?? {};
-  const uri = await vscode.window.showSaveDialog({ filters: { 'JSON': ['json'] }, defaultUri: vscode.Uri.file(`tsql-formatter-${name}.json`) });
+  const uri = await vscode.window.showSaveDialog({ filters: { 'JSON': ['json'] }, defaultUri: vscode.Uri.file(`sql-formatter-${name}.json`) });
   if (!uri) {
     return;
   }
@@ -263,13 +263,7 @@ export async function importProfile(context: vscode.ExtensionContext) {
   }
   const uri = uris[0];
   const bytes = await vscode.workspace.fs.readFile(uri);
-  let data;
-  try {
-    data = JSON.parse(Buffer.from(bytes).toString('utf8'));
-  } catch (err) {
-    vscode.window.showErrorMessage(`Failed to parse JSON: ${(err && err.message) ? err.message : err}`);
-    return;
-  }
+  const data = JSON.parse(Buffer.from(bytes).toString('utf8'));
   const name = await vscode.window.showInputBox({ prompt: 'Profile name to import as', value: 'imported' });
   if (!name) {
     return;
