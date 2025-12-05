@@ -152,7 +152,6 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
       return items.map((i: string, idx: number) => (idx < items.length - 1 ? `${i},` : i)).join(' ');
     };
     out = out.replace(/GROUP\s+BY\s+([^;\n]+)(?=\s*(?:ORDER\s+BY|HAVING|UNION|INTERSECT|EXCEPT|\)|;|$))/gi, (m, p1) => {
-      const prefix = m.replace(/GROUP\s+BY\s+[^]*$/i, ''); // preserve case as in output
       const placed = applyListPlacement(p1);
       return `GROUP BY ${placed}`;
     });
