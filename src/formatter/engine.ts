@@ -84,13 +84,10 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
       }
       if (columnsCommaPlacement !== 'ignore') {
         if (columnsCommaPlacement === 'leading') {
-          lines = items.map((i: string, idx: number) => (idx === 0 ? i : `, ${i}`));
+          lines = lines.map((i: string, idx: number) => (idx === 0 ? i : `, ${i}`));
         } else {
-          lines = items.map((i: string, idx: number) => (idx < items.length - 1 ? `${i},` : i));
+          lines = lines.map((i: string, idx: number) => (idx < lines.length - 1 ? `${i},` : i));
         }
-      } else {
-        // Preserve original items order without altering comma positions
-        lines = items.map((i: string) => i);
       }
       // Alias tabulation (simple: align AS or alias start)
       if (tabulateAlias) {
