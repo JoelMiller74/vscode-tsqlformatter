@@ -1,0 +1,32 @@
+coverage:
+  status:
+    project:
+      default:
+        # Require at least 80% overall coverage
+        target: 80%
+        threshold: 1%
+        # Fail PR if overall dips below target
+        if_not_found: error
+    patch:
+      default:
+        # Require changed lines/files to maintain 80% coverage
+        target: 80%
+        threshold: 1%
+        # Enforce patch-level coverage on PRs
+        if_not_found: error
+  precision: 2
+  round: down
+  range: 60..100
+
+comment:
+  layout: "reach, diff, flags, files"
+  require_changes: false
+  behavior: default
+
+ignore:
+  - "src/test/**"
+
+flags:
+  unit:
+    paths:
+      - "src/**"
