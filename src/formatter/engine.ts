@@ -78,20 +78,20 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
           return l;
         });
       } else if (aliasKeyword === 'remove') {
-        lines = lines.map((l: string) => {
+        // Remove alias AS keyword from items before further processing
+        const processedItems = lines.map((l: string) => {
           return l.replace(/\s+AS\s+(\w+)\s*(,)?\s*$/i, ' $1$2');
         });
       }
       if (columnsCommaPlacement !== 'ignore') {
         if (columnsCommaPlacement === 'leading') {
-          lines = items.map((i: string, idx: number) => (idx === 0 ? i : `, ${i}`));
+          lines = (aliasKeyword === 'remove' ? processedItems : lines).map((i: string, idx: number) => (idx === 0 ? i : `, ${i}`));
         } else {
-          lines = items.map((i: string, idx: number) => (idx < items.length - 1 ? `${i},` : i));
+          lines = (aliasKeyword === 'remove' ? processedItems : lines).map((i: string, idx: number) => (idx < (aliasKeyword === 'remove' ? processedItems.length : lines.length) - 1 ? `${i},` : i));
         }
       } else {
         // Preserve original items order without altering comma positions
-        lines = items.map((i: string) => i);
-      }
+        lines = (aliasKeyword === 'remove' ? processedItems : lines).map((i: string) => i);
       // Alias tabulation (simple: align AS or alias start)
       if (tabulateAlias) {
         // compute display length up to alias start (including space + optional AS)
