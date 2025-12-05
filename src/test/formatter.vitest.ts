@@ -19,7 +19,7 @@ describe('Formatter Engine (Vitest)', () => {
   it('bracket identifiers add/remove', () => {
     const t = 'SELECT a.Id, dbo.TableA FROM dbo.TableA a';
     const add = formatTsql(t, { options: {} as any, config: cfg({ bracketIdentifiers: 'add' }), profile: {} });
-    expect(/\[a\]\n?\.\n?\[Id\]/.test(add)).toBe(true);
+    expect(/\[a\]\.\[Id\]/.test(add)).toBe(true);
     const remove = formatTsql('[dbo].[TableA]', { options: {} as any, config: cfg({ bracketIdentifiers: 'remove' }), profile: {} });
     expect(remove).toBe('dbo.TableA');
   });
