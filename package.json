@@ -2,7 +2,7 @@
   "name": "tsqlformatter",
   "displayName": "T-SQL Formatter",
   "description": "Rich SQL Server T-SQL formatter with profiles, import/export, and extensive options",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "engines": {
     "vscode": "^1.106.1"
   },
