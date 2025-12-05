@@ -252,8 +252,13 @@ export async function exportProfile(context: vscode.ExtensionContext) {
   if (!uri) {
     return;
   }
-  await vscode.workspace.fs.writeFile(uri, Buffer.from(JSON.stringify(data, null, 2)));
-  vscode.window.showInformationMessage(`Exported profile to ${uri.fsPath}`);
+  try {
+    await vscode.workspace.fs.writeFile(uri, Buffer.from(JSON.stringify(data, null, 2)));
+    vscode.window.showInformationMessage(`Exported profile to ${uri.fsPath}`);
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    vscode.window.showErrorMessage(`Failed to export profile: ${msg}`);
+  }
 }
 
 export async function importProfile(context: vscode.ExtensionContext) {
@@ -262,13 +267,18 @@ export async function importProfile(context: vscode.ExtensionContext) {
     return;
   }
   const uri = uris[0];
-  const bytes = await vscode.workspace.fs.readFile(uri);
-  const data = JSON.parse(Buffer.from(bytes).toString('utf8'));
-  const name = await vscode.window.showInputBox({ prompt: 'Profile name to import as', value: 'imported' });
-  if (!name) {
-    return;
+  try {
+    const bytes = await vscode.workspace.fs.readFile(uri);
+    const data = JSON.parse(Buffer.from(bytes).toString('utf8'));
+    const name = await vscode.window.showInputBox({ prompt: 'Profile name to import as', value: 'imported' });
+    if (!name) {
+      return;
+    }
+    await context.globalState.update(`profile:${name}`, data);
+    await context.globalState.update(ACTIVE_PROFILE_KEY, name);
+    vscode.window.showInformationMessage(`Imported profile "${name}" from ${uri.fsPath}`);
+  } catch (e: unknown) {
+    const msg = e instanceof Error ? e.message : String(e);
+    vscode.window.showErrorMessage(`Failed to import profile: ${msg}`);
   }
-  await context.globalState.update(`profile:${name}`, data);
-  await context.globalState.update(ACTIVE_PROFILE_KEY, name);
-  vscode.window.showInformationMessage(`Imported profile "${name}" from ${uri.fsPath}`);
 }
