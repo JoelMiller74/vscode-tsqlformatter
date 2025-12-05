@@ -78,20 +78,20 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
           return l;
         });
       } else if (aliasKeyword === 'remove') {
-        // Remove alias AS keyword from items before further processing
-        const processedItems = lines.map((l: string) => {
+        lines = lines.map((l: string) => {
           return l.replace(/\s+AS\s+(\w+)\s*(,)?\s*$/i, ' $1$2');
         });
       }
       if (columnsCommaPlacement !== 'ignore') {
         if (columnsCommaPlacement === 'leading') {
-          lines = (aliasKeyword === 'remove' ? processedItems : lines).map((i: string, idx: number) => (idx === 0 ? i : `, ${i}`));
+          lines = items.map((i: string, idx: number) => (idx === 0 ? i : `, ${i}`));
         } else {
-          lines = (aliasKeyword === 'remove' ? processedItems : lines).map((i: string, idx: number) => (idx < (aliasKeyword === 'remove' ? processedItems.length : lines.length) - 1 ? `${i},` : i));
+          lines = items.map((i: string, idx: number) => (idx < items.length - 1 ? `${i},` : i));
         }
       } else {
         // Preserve original items order without altering comma positions
-        lines = (aliasKeyword === 'remove' ? processedItems : lines).map((i: string) => i);
+        lines = items.map((i: string) => i);
+      }
       // Alias tabulation (simple: align AS or alias start)
       if (tabulateAlias) {
         // compute display length up to alias start (including space + optional AS)
@@ -114,6 +114,7 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
           if (l.length <= expressionWidth) { return [l]; }
           const result: string[] = [];
           let current = l.trim();
+          const parts: string[] = [];
           const includeComma = safeWrapDelims.includes('comma');
           const includeAnd = safeWrapDelims.some(d => d.toUpperCase() === 'AND');
           const includeOr = safeWrapDelims.some(d => d.toUpperCase() === 'OR');
@@ -152,6 +153,7 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
       return items.map((i: string, idx: number) => (idx < items.length - 1 ? `${i},` : i)).join(' ');
     };
     out = out.replace(/GROUP\s+BY\s+([^;\n]+)(?=\s*(?:ORDER\s+BY|HAVING|UNION|INTERSECT|EXCEPT|\)|;|$))/gi, (m, p1) => {
+      const prefix = m.replace(/GROUP\s+BY\s+[^]*$/i, ''); // preserve case as in output
       const placed = applyListPlacement(p1);
       return `GROUP BY ${placed}`;
     });
