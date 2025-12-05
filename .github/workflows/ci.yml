@@ -47,17 +47,3 @@ jobs:
           files: ./coverage/**/coverage-final.json
           fail_ci_if_error: true
           verbose: true
-        on:
-          push:
-            branches:
-              - main
-              - initial-commit
-          pull_request:
-            branches:
-              - main
-          workflow_dispatch:
-            inputs:
-              reason:
-                description: "Optional note for manual run"
-                required: false
-                default: "manual-trigger"
