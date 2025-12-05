@@ -114,7 +114,6 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
           if (l.length <= expressionWidth) { return [l]; }
           const result: string[] = [];
           let current = l.trim();
-          const parts: string[] = [];
           const includeComma = safeWrapDelims.includes('comma');
           const includeAnd = safeWrapDelims.some(d => d.toUpperCase() === 'AND');
           const includeOr = safeWrapDelims.some(d => d.toUpperCase() === 'OR');
