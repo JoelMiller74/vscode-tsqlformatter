@@ -263,7 +263,13 @@ export async function importProfile(context: vscode.ExtensionContext) {
   }
   const uri = uris[0];
   const bytes = await vscode.workspace.fs.readFile(uri);
-  const data = JSON.parse(Buffer.from(bytes).toString('utf8'));
+  let data;
+  try {
+    data = JSON.parse(Buffer.from(bytes).toString('utf8'));
+  } catch (err) {
+    vscode.window.showErrorMessage(`Failed to parse JSON: ${(err && err.message) ? err.message : err}`);
+    return;
+  }
   const name = await vscode.window.showInputBox({ prompt: 'Profile name to import as', value: 'imported' });
   if (!name) {
     return;
