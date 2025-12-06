@@ -4,7 +4,7 @@
   "description": "Rich SQL Server T-SQL formatter with profiles, import/export, and extensive options",
   "version": "0.1.0",
   "engines": {
-    "vscode": "^1.106.1"
+    "vscode": "^1.190.0"
   },
   "categories": [
     "Other"
@@ -283,7 +283,8 @@
     "test:unit": "vitest --run",
     "test:watch": "vitest",
     "coverage": "vitest --run --coverage",
-    "build": "npm run compile"
+    "build": "npm run compile",
+    "audit": "npm audit"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
