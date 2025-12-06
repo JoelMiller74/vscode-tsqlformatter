@@ -205,7 +205,8 @@ describe('Formatter Engine (Vitest)', () => {
   it('align column definitions true', () => {
     const t = 'CREATE TABLE t (id INT, name VARCHAR(50))';
     const out = formatTsql(t, { options: {} as any, config: cfg({ alignColumnDefinitions: true }), profile: {} });
-    expect(out).toBe('CREATE TABLE t (\n  id   INT,\n  name VARCHAR(50)\n))');
+    console.log('align-cols OUT:\n' + out);
+    expect(out).toBe('CREATE TABLE t (\n  id   INT,\n  name VARCHAR(50)\n)');
   });
 
   it('bracket identifiers remove', () => {
