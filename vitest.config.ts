@@ -6,7 +6,7 @@ export default defineConfig({
     environment: 'node',
     reporters: ['default'],
     coverage: {
-      reporter: ['text', 'html'],
+      reporter: ['text', 'html', 'json', 'lcov'],
     },
   },
 });
