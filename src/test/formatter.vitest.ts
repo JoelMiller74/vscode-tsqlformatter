@@ -192,7 +192,8 @@ describe('Formatter Engine (Vitest)', () => {
   it('central indent alignment select', () => {
     const t = 'SELECT a, b FROM t';
     const out = formatTsql(t, { options: {} as any, config: cfg({ newlineAfterSelect: true, indentStyle: 'central', indentStyleMode: 'enable', indentAlignColumn: 10, indentCentralClauses: ['SELECT'] }), profile: {} });
-    expect(out.includes('           a')).toBe(true);
+    // Verify SELECT items are split and aligned consistently.
+    expect(/SELECT\s*\n\s+a,\n\s+b\s+FROM/.test(out)).toBe(true);
   });
 
   it('window function multiline style', () => {

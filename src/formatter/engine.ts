@@ -247,9 +247,18 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
     const clauseMatcher = new RegExp(`^(${indentCentralClauses.join('|')})\\b`, 'i');
     out = out.split('\n').map((ln: string) => (clauseMatcher.test(ln) ? alignLine(ln) : ln)).join('\n');
     // Optionally align SELECT items if requested
+    // Note: When central alignment targets 'SELECT', we first ensure items are on
+    // separate lines (splitting by commas if they are on a single line), then apply
+    // padding to each item so they visually align to the configured column. This
+    // makes alignment predictable and avoids ambiguity when items start on one line.
     if (indentCentralClauses.map(c => c.toUpperCase()).includes('SELECT')) {
       out = out.replace(/SELECT\s+([\s\S]*?)\s+FROM/gi, (m, list) => {
-        const lines = list.split(/\n+/);
+        let lines = list.split(/\n+/).map((l: string) => l.trim());
+        // If items are not already split by newline, split by commas and preserve trailing commas
+        if (lines.length === 1) {
+          const items = list.split(',').map((s: string) => s.trim());
+          lines = items.map((i: string, idx: number) => (idx < items.length - 1 ? `${i},` : i));
+        }
         const aligned = lines.map((l: string) => alignLine(l));
         return `SELECT\n${aligned.join('\n')} FROM`;
       });
