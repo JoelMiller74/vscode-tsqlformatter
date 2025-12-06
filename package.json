@@ -1,0 +1,304 @@
+{
+  "name": "tsqlformatter",
+  "displayName": "T-SQL Formatter",
+  "description": "Rich SQL Server T-SQL formatter with profiles, import/export, and extensive options",
+  "version": "0.1.0",
+  "engines": {
+    "vscode": "^1.90.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onLanguage:sql"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "tsqlformatter.saveProfile",
+        "title": "T-SQL Formatter: Save Active Profile"
+      },
+      {
+        "command": "tsqlformatter.loadProfile",
+        "title": "T-SQL Formatter: Load Profile for Workspace"
+      },
+      {
+        "command": "tsqlformatter.exportProfile",
+        "title": "T-SQL Formatter: Export Active Profile"
+      },
+      {
+        "command": "tsqlformatter.importProfile",
+        "title": "T-SQL Formatter: Import Profile"
+      }
+    ],
+    "configuration": {
+      "title": "T-SQL Formatter",
+      "properties": {
+        "tsqlformatter.ignoreTabSettings": {
+          "type": "boolean",
+          "default": false,
+          "description": "Ignore VS Code tabSize and insertSpaces settings."
+        },
+        "tsqlformatter.tabSizeOverride": {
+          "type": "number",
+          "default": 4,
+          "minimum": 0,
+          "description": "Override tabSize when ignoreTabSettings is enabled."
+        },
+        "tsqlformatter.insertSpacesOverride": {
+          "type": "boolean",
+          "default": true,
+          "description": "Override insertSpaces when ignoreTabSettings is enabled."
+        },
+        "tsqlformatter.profile": {
+          "type": "string",
+          "default": "default",
+          "description": "Active profile name to use for formatting."
+        },
+        "tsqlformatter.keywordCasing": {
+          "type": "string",
+          "enum": [
+            "upper",
+            "lower",
+            "original"
+          ],
+          "default": "upper",
+          "description": "Keyword casing preference."
+        },
+        "tsqlformatter.identifierCasing": {
+          "type": "string",
+          "enum": [
+            "upper",
+            "lower",
+            "original"
+          ],
+          "default": "original",
+          "description": "Identifier casing preference (tables, columns)."
+        },
+        "tsqlformatter.indentSize": {
+          "type": "number",
+          "default": 4,
+          "minimum": 0,
+          "description": "Spaces per indentation level."
+        },
+        "tsqlformatter.indentStyle": {
+          "type": "string",
+          "enum": [
+            "standard",
+            "central"
+          ],
+          "default": "standard",
+          "description": "Standard keyword positioning vs maintaining a central alignment column."
+        },
+        "tsqlformatter.indentStyleMode": {
+          "type": "string",
+          "enum": [
+            "ignore",
+            "enable"
+          ],
+          "default": "ignore",
+          "description": "Whether to apply central alignment."
+        },
+        "tsqlformatter.indentCentralClauses": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "SELECT",
+              "WHERE",
+              "ON",
+              "SET"
+            ]
+          },
+          "default": [
+            "ON",
+            "SET"
+          ],
+          "description": "Clauses that should participate in central alignment when enabled."
+        },
+        "tsqlformatter.indentAlignColumn": {
+          "type": "number",
+          "default": 40,
+          "minimum": 0,
+          "description": "Target column for central alignment when enabled."
+        },
+        "tsqlformatter.columnsCommaPlacement": {
+          "type": "string",
+          "enum": [
+            "leading",
+            "trailing",
+            "ignore"
+          ],
+          "default": "trailing",
+          "description": "Placement of commas in column lists (SELECT/ORDER BY/GROUP BY); 'ignore' preserves existing formatting."
+        },
+        "tsqlformatter.alignColumnDefinitions": {
+          "type": "boolean",
+          "default": true,
+          "description": "Align column definitions in CREATE TABLE statements."
+        },
+        "tsqlformatter.newlineAfterSelect": {
+          "type": "boolean",
+          "default": true,
+          "description": "Place each SELECT list item on a new line."
+        },
+        "tsqlformatter.newlineAfterFrom": {
+          "type": "boolean",
+          "default": true,
+          "description": "Place FROM and JOIN clauses on new lines."
+        },
+        "tsqlformatter.logicalOperatorNewline": {
+          "type": "string",
+          "enum": [
+            "before",
+            "after",
+            "none"
+          ],
+          "default": "after",
+          "description": "Break before or after logical operators AND/OR."
+        },
+        "tsqlformatter.tabulateAlias": {
+          "type": "boolean",
+          "default": false,
+          "description": "Right-align aliases to the longest line in the SELECT clause."
+        },
+        "tsqlformatter.aliasKeyword": {
+          "type": "string",
+          "enum": [
+            "enable",
+            "remove",
+            "ignore"
+          ],
+          "default": "ignore",
+          "description": "Add (enable), remove, or ignore the ' AS' keyword across aliased items (columns, tables, etc.)."
+        },
+        "tsqlformatter.joinAlignment": {
+          "type": "string",
+          "enum": [
+            "left",
+            "indent"
+          ],
+          "default": "indent",
+          "description": "Alignment style for JOIN clauses."
+        },
+        "tsqlformatter.expressionWidth": {
+          "type": "number",
+          "default": 0,
+          "minimum": 0,
+          "description": "Max characters per line before breaking expressions (0 disables)."
+        },
+        "tsqlformatter.safeWrapDelimiters": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "enum": [
+              "comma",
+              "AND",
+              "OR"
+            ]
+          },
+          "default": [
+            "comma",
+            "AND",
+            "OR"
+          ],
+          "description": "Delimiters allowed for wrapping when enforcing expressionWidth."
+        },
+        "tsqlformatter.linesBetweenQueries": {
+          "type": "number",
+          "default": 1,
+          "minimum": 0,
+          "description": "Number of blank lines between statements."
+        },
+        "tsqlformatter.parenthesisSpacing": {
+          "type": "string",
+          "enum": [
+            "none",
+            "inside",
+            "outside"
+          ],
+          "default": "none",
+          "description": "Spaces around parentheses."
+        },
+        "tsqlformatter.operatorSpacing": {
+          "type": "boolean",
+          "default": true,
+          "description": "Insert spaces around operators (=, +, -, *, /)."
+        },
+        "tsqlformatter.denseOperators": {
+          "type": "boolean",
+          "default": false,
+          "description": "Strip whitespace around operators such as + or >=. Overrides operatorSpacing when true."
+        },
+        "tsqlformatter.cteStyle": {
+          "type": "string",
+          "enum": [
+            "newline",
+            "inline"
+          ],
+          "default": "newline",
+          "description": "Format CTEs with WITH on its own line vs inline."
+        },
+        "tsqlformatter.windowFunctionStyle": {
+          "type": "string",
+          "enum": [
+            "compact",
+            "multiline"
+          ],
+          "default": "compact",
+          "description": "Format OVER(PARTITION BY...) compact or multi-line."
+        },
+        "tsqlformatter.newlineBeforeSemicolon": {
+          "type": "boolean",
+          "default": false,
+          "description": "Place semicolon on its own line before statement end."
+        },
+        "tsqlformatter.bracketIdentifiers": {
+          "type": "string",
+          "enum": [
+            "add",
+            "remove",
+            "ignore"
+          ],
+          "default": "ignore",
+          "description": "Add or remove square brackets around identifiers (tables, columns, schemas, aliases)."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "set VSCODE_USER_DATA_DIR=.vscode-test-data && vscode-test",
+    "test:unit": "vitest --run",
+    "test:watch": "vitest",
+    "coverage": "vitest --run --coverage",
+    "build": "npm run compile",
+    "audit": "npm audit"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.10",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.90.0",
+    "@vitest/coverage-v8": "^4.0.15",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2",
+    "esbuild": "^0.27.0",
+    "eslint": "^9.39.1",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.46.3",
+    "vitest": "^4.0.15"
+  },
+  "extensionDependencies": []
+}

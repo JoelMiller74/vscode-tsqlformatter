@@ -1,0 +1,10 @@
+out
+dist
+node_modules
+.vscode-test/
+*.vsix
+
+# Test artifacts
+coverage/
+vitest-report.xml
+.vscode-test-data/
