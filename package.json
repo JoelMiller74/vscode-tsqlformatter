@@ -4,7 +4,7 @@
   "description": "Rich SQL Server T-SQL formatter with profiles, import/export, and extensive options",
   "version": "0.1.0",
   "engines": {
-    "vscode": "^1.190.0"
+    "vscode": "^1.90.0"
   },
   "categories": [
     "Other"
@@ -288,8 +288,8 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "22.x",
-    "@types/vscode": "^1.106.1",
+    "@types/node": "20.x",
+    "@types/vscode": "^1.90.0",
     "@vitest/coverage-v8": "^4.0.15",
     "@vscode/test-cli": "^0.0.12",
     "@vscode/test-electron": "^2.5.2",

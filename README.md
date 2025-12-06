@@ -14,7 +14,7 @@ Rich T‑SQL formatter for `.sql` files with extensive options and sharable prof
 
 ## Requirements
 
-- VS Code 1.106+
+- VS Code 1.190+
   
 
 ## Extension Settings
