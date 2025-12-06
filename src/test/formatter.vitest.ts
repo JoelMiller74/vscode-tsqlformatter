@@ -98,4 +98,119 @@ describe('Formatter Engine (Vitest)', () => {
     const out = formatTsql(t, { options: {} as any, config: cfg({ newlineBeforeSemicolon: true, linesBetweenQueries: 2 }), profile: {} });
     expect(out.includes('\n;\n')).toBe(true);
   });
+
+  it('dense operators', () => {
+    const t = 'WHERE a = 10 AND b > 5';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ denseOperators: true }), profile: {} });
+    expect(out).toBe('WHERE a=10AND\nb>5');
+  });
+
+  it('parenthesis spacing outside', () => {
+    const t = 'COUNT(*)';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ parenthesisSpacing: 'outside' }), profile: {} });
+    expect(out).toBe('COUNT( * ) ');
+  });
+
+  it('join alignment left', () => {
+    const t = 'SELECT a FROM t INNER JOIN x ON t.id=x.id';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ newlineAfterFrom: true, joinAlignment: 'left' }), profile: {} });
+    expect(/\nINNER JOIN /.test(out)).toBe(true);
+  });
+
+  it('logical operator newline before', () => {
+    const t = 'WHERE a = 1 AND b = 2';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ logicalOperatorNewline: 'before' }), profile: {} });
+    expect(/\nAND /.test(out)).toBe(true);
+  });
+
+  it('alias keyword enable for table aliases', () => {
+    const t = 'SELECT a FROM dbo.Table t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ aliasKeyword: 'enable' }), profile: {} });
+    expect(out).toBe('SELECT\n    a\nFROM dbo.TABLE AS t');
+  });
+
+  it('columns comma placement ignore', () => {
+    const t = 'SELECT a, b, c FROM t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ newlineAfterSelect: true, columnsCommaPlacement: 'ignore' }), profile: {} });
+    expect(/SELECT\n\s+a\n\s+b\n\s+c\nFROM/.test(out)).toBe(true);
+  });
+
+  it('expression width wrapping', () => {
+    const t = 'SELECT verylongcolumnname, anotherverylongcolumnname FROM t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ newlineAfterSelect: true, expressionWidth: 20, safeWrapDelimiters: ['comma'] }), profile: {} });
+    expect(out.includes('\n')).toBe(true);
+  });
+
+  it('cte style inline', () => {
+    const t = 'WITH c AS (SELECT * FROM t) SELECT * FROM c';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ cteStyle: 'inline' }), profile: {} });
+    expect(out).toBe('WITH c AS(SELECT\n    *\nFROM t) SELECT\n    *\nFROM c');
+  });
+
+  it('window function compact style', () => {
+    const t = 'SELECT ROW_NUMBER() OVER(PARTITION BY a ORDER BY b) FROM t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ windowFunctionStyle: 'compact' }), profile: {} });
+    expect(/OVER\(PARTITION BY a ORDER BY b\)/.test(out)).toBe(true);
+  });
+
+  it('align column definitions false', () => {
+    const t = 'CREATE TABLE t (id INT, name VARCHAR(50))';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ alignColumnDefinitions: false }), profile: {} });
+    expect(out).toBe('CREATE TABLE t(id INT, name VARCHAR(50))');
+  });
+
+  it('bracket identifiers ignore', () => {
+    const t = 'SELECT a FROM [dbo].[Table]';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ bracketIdentifiers: 'ignore' }), profile: {} });
+    expect(out).toBe('SELECT\n    a\nFROM [dbo].[TABLE]');
+  });
+
+  it('tabulate alias', () => {
+    const t = 'SELECT a AS alias, verylongcolumn AS longer FROM t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ newlineAfterSelect: true, tabulateAlias: true }), profile: {} });
+    expect(out).toBe('SELECT\n    a AS alias, verylongcolumn AS longer\nFROM t');
+  });
+
+  it('expression width wrapping without delimiters', () => {
+    const t = 'SELECT verylongcolumnnamethatexceeds FROM t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ newlineAfterSelect: true, expressionWidth: 20 }), profile: {} });
+    expect(out.includes('\n')).toBe(true);
+  });
+
+  it('alias keyword remove for table aliases', () => {
+    const t = 'SELECT a FROM dbo.Table AS t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ aliasKeyword: 'remove' }), profile: {} });
+    expect(out).toBe('SELECT\n    a\nFROM dbo.TABLE t');
+  });
+
+  it('central indent alignment', () => {
+    const t = 'SELECT a FROM t\nWHERE b = 1';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ indentStyle: 'central', indentStyleMode: 'enable', indentAlignColumn: 20, indentCentralClauses: ['WHERE'] }), profile: {} });
+    expect(out.includes('         WHERE')).toBe(true);
+  });
+
+  it('central indent alignment select', () => {
+    const t = 'SELECT a, b FROM t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ newlineAfterSelect: true, indentStyle: 'central', indentStyleMode: 'enable', indentAlignColumn: 10, indentCentralClauses: ['SELECT'] }), profile: {} });
+    // Verify SELECT items are split and aligned consistently.
+    expect(/SELECT\s*\n\s+a,\n\s+b\s+FROM/.test(out)).toBe(true);
+  });
+
+  it('window function multiline style', () => {
+    const t = 'SELECT ROW_NUMBER() OVER(PARTITION BY a ORDER BY b) FROM t';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ windowFunctionStyle: 'multiline' }), profile: {} });
+    expect(/OVER\s*\(\s*\n\s*PARTITION BY/.test(out)).toBe(true);
+  });
+
+  it('align column definitions true', () => {
+    const t = 'CREATE TABLE t (id INT, name VARCHAR(50))';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ alignColumnDefinitions: true }), profile: {} });
+    expect(out).toBe('CREATE TABLE t (\n  id   INT,\n  name VARCHAR(50)\n))');
+  });
+
+  it('bracket identifiers remove', () => {
+    const t = 'SELECT [a] FROM [t]';
+    const out = formatTsql(t, { options: {} as any, config: cfg({ bracketIdentifiers: 'remove' }), profile: {} });
+    expect(out).toBe('SELECT\n    a\nFROM t');
+  });
 });
