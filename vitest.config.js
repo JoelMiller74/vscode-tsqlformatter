@@ -5,10 +5,11 @@ exports.default = (0, config_1.defineConfig)({
     test: {
         include: ['src/test/**/*.vitest.ts'],
         environment: 'node',
-        reporters: ['default'],
+        reporters: ['junit'],
         coverage: {
-            reporter: ['text', 'html'],
+            reporter: ['text', 'html', 'json'],
         },
+        outputFile: 'test-report.junit.xml',
     },
 });
 //# sourceMappingURL=vitest.config.js.map

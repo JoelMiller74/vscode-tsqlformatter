@@ -268,7 +268,7 @@ export function formatTsql(text: string, { options, config, profile }: EngineCon
   // DDL: align CREATE TABLE column definitions (basic)
   const alignCols = config.get?.('alignColumnDefinitions', true);
   if (alignCols) {
-    out = out.replace(/CREATE\s+TABLE\s+([\s\S]*?)\(([\s\S]*?)\)/gi, (m, tbl, cols) => {
+    out = out.replace(/CREATE\s+TABLE\s+([\s\S]*?)\s*\(((?:[^()]*|\([^()]*\))*)\)/gi, (m, tbl, cols) => {
       const lines = cols.split(',').map((s: string) => s.trim());
       const maxName = Math.max(...lines.map((l: string) => (l.split(/\s+/)[0] || '').length));
       const padded = lines.map((l: string) => {
