@@ -2,7 +2,7 @@
 
 ![CI](https://github.com/JoelMiller74/vscode-tsqlformatter/actions/workflows/ci.yml/badge.svg)
 ![codecov](https://codecov.io/gh/JoelMiller74/vscode-tsqlformatter/branch/main/graph/badge.svg)
-![codecov](https://github-production-user-asset-6210df.s3.amazonaws.com/152432831/340411587-e90313f4-9d3a-4b63-8b54-cfe14e7ec20d.svg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20251206%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20251206T222833Z&X-Amz-Expires=300&X-Amz-Signature=e7749b3b05c6655f020fe5fa413b700e9e8e733d1efe3732e665789f861c3415&X-Amz-SignedHeaders=host)
+![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/JoelMiller74/vscode-tsqlformatter/ci.yml?branch=main)
 
 Rich T‑SQL formatter for `.sql` files with extensive options and sharable profiles.
 
