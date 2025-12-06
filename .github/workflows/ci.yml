@@ -43,6 +43,8 @@ jobs:
         env:
           DISPLAY: ":99"
           DBUS_SESSION_BUS_ADDRESS: "/dev/null"
+          ELECTRON_DISABLE_GPU: 1
+          LIBGL_ALWAYS_SOFTWARE: 1
         run: xvfb-run -a -s "-screen 0 1280x1024x24" npm test --if-present
 
       - name: Test (e2e, non-Linux)
